@@ -1,6 +1,6 @@
 <?php 
 //Get your field
-$sections = get_field('section');
+$sections = get_field('sections');
 if($sections) { 
 
 //Create a number so we can count odd rows

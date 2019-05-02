@@ -1,0 +1,60 @@
+<?php 
+//Get your field
+$sections = get_field('section');
+if($sections) { 
+
+//Create a number so we can count odd rows
+$n = 0;
+
+// For each section in sections.
+foreach($sections as $section) { 
+
+// Get image ID, not array!
+$image	= $section['image'];
+$imgtxt = get_the_title($image);
+$imgsrc = wp_get_attachment_image($image, 'large', false, array( 'class' => 'img-fluid'));
+
+$title	= $section['title'];
+$text	= $section['text'];
+
+$url 	= $section['url']['url'];
+$urltxt	= $section['url']['title'];
+$urlext	= $section['url']['target'];
+
+$external = $urlext ? 'target="_blank" rel="noopener"' : '';
+
+echo '
+<section class="sections py-5 shadow-sm">
+	<div class="container py-md-5">
+		<div class="row">';
+
+			echo '
+			<div class="'. (($image) ? 'col-lg-8' : 'col') .' d-flex flex-column justify-content-center '. (($n % 2) ? 'order-md-last' : '') .'">
+				<div class="text-left '. (($n % 2) ? 'text-md-right' : 'text-md-left') .'">';
+					if($title) { echo '<h3 itemprop="subheading">' . $title . '</h3>'; }
+					if($text) {	echo '<p>' . $text . '</p>'; }
+					if($url && $urltxt) { echo '<a class="btn btn-success" href="' . $url . '" '. $external .'>' . $urltxt . '</a>'; }
+					echo '
+				</div>
+			</div>';
+
+			if($image) { 
+				echo '
+				<div class="col py-2">
+					<figure class="mb-0">
+						'. $imgsrc .'
+						<figcaption>
+							<small>'. $imgtxt .'</small>
+						</figcaption>
+					</figure>
+				</div>
+				';
+				} 
+			echo '
+		</div>
+	</div>
+</section>';
+
+$n++;
+
+} } ?>
